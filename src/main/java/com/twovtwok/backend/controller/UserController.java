@@ -1,7 +1,7 @@
 package com.twovtwok.backend.controller;
 
+import com.twovtwok.backend.dao.Photo;
 import com.twovtwok.backend.dao.User;
-import com.twovtwok.backend.rep.UserRepository;
 import com.twovtwok.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -43,11 +43,12 @@ public class UserController {
 
     @PutMapping("/{id}")
     public ResponseEntity<User> updateUser(@PathVariable("id") Long id, @RequestBody User user) {
-        if (userService.getUserById(id) != null) {
+        if (userService.getUserById(id) == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         user.setId(id);
         User updatedUser = userService.getUserById(user.getId());
+        userService.updateUser(id,updatedUser);
         return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
 
@@ -59,4 +60,15 @@ public class UserController {
         userService.deleteUser(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @GetMapping("/{userId}/photos")
+    public ResponseEntity<List<Photo>> getUserPhotos(@PathVariable("userId") Long userId) {
+        User user = userService.getUserById(userId);
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        List<Photo> userPhotos = user.getPhotos();
+        return new ResponseEntity<>(userPhotos, HttpStatus.OK);
+    }
+
 }

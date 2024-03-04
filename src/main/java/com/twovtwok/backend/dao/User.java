@@ -1,14 +1,13 @@
 package com.twovtwok.backend.dao;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import lombok.NonNull;
+
+import java.util.List;
 
 @Entity(name="users")
 @Data
@@ -24,4 +23,9 @@ public class User {
     private String password;
     @NonNull
     private String permissions;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Photo> photos;
+    @OneToOne
+    @JoinColumn(name = "profile_photo_id")
+    private Photo profilePhoto;
 }
