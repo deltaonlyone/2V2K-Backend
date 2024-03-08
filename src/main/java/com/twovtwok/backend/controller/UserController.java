@@ -1,6 +1,5 @@
 package com.twovtwok.backend.controller;
 
-import com.twovtwok.backend.dao.Photo;
 import com.twovtwok.backend.dao.User;
 import com.twovtwok.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +22,7 @@ public class UserController {
         if (users == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(users, HttpStatus.OK);
+        return ResponseEntity.ok(users);
     }
 
     @GetMapping("/{id}")
@@ -32,7 +31,7 @@ public class UserController {
         if (user == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        return ResponseEntity.ok(user);
     }
 
     @PostMapping
@@ -60,15 +59,4 @@ public class UserController {
         userService.deleteUser(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
-    @GetMapping("/{userId}/photos")
-    public ResponseEntity<List<Photo>> getUserPhotos(@PathVariable("userId") Long userId) {
-        User user = userService.getUserById(userId);
-        if (user == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        List<Photo> userPhotos = user.getPhotos();
-        return new ResponseEntity<>(userPhotos, HttpStatus.OK);
-    }
-
 }
