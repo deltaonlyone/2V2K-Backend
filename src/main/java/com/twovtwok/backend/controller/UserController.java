@@ -2,28 +2,26 @@ package com.twovtwok.backend.controller;
 
 import com.twovtwok.backend.dao.User;
 import com.twovtwok.backend.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/api/users")
+@RequiredArgsConstructor
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @GetMapping
-    public ResponseEntity<List<User>> getUsers() {
-        List<User> users = userService.getAllUsers();
-        if (users == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return ResponseEntity.ok(users);
-    }
+//    @GetMapping
+//    public ResponseEntity<List<User>> getUsers() {
+//        List<User> users = userService.getAllUsers();
+//        if (users == null) {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+//        return ResponseEntity.ok(users);
+//    }
 
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable("id") Long id) {
@@ -34,11 +32,6 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
-    @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        User newUser = userService.createUser(user);
-        return new ResponseEntity<>(newUser, HttpStatus.CREATED);
-    }
 
     @PutMapping("/{id}")
     public ResponseEntity<User> updateUser(@PathVariable("id") Long id, @RequestBody User user) {
@@ -47,7 +40,7 @@ public class UserController {
         }
         user.setId(id);
         User updatedUser = userService.getUserById(user.getId());
-        userService.updateUser(id,updatedUser);
+        userService.updateUser(id, updatedUser);
         return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
 
@@ -58,5 +51,11 @@ public class UserController {
         }
         userService.deleteUser(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PostMapping("singup")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void singUp(@RequestBody User user) {
+        userService.register(user);
     }
 }

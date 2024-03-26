@@ -3,7 +3,7 @@ package com.twovtwok.backend.controller;
 import com.twovtwok.backend.dao.Photo;
 import com.twovtwok.backend.service.PhotoService;
 import com.twovtwok.backend.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,12 +14,11 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
+@RequiredArgsConstructor
 public class GalleryController {
 
-    @Autowired
-    private PhotoService photoService;
-    @Autowired
-    private UserService userService;
+    private final PhotoService photoService;
+    private final UserService userService;
 
     @GetMapping("/photos")
     public ResponseEntity<List<Long>> getPhotos(){

@@ -2,7 +2,7 @@ package com.twovtwok.backend.controller;
 
 import com.twovtwok.backend.dao.Photo;
 import com.twovtwok.backend.service.PhotoService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
@@ -21,11 +21,12 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/photos")
+@RequiredArgsConstructor
 public class PhotoController {
 
-    @Autowired
-    private PhotoService photoService;
-    private String uploadPath;
+
+    private final PhotoService photoService;
+    private final String uploadPath = "photos/";
 
     @PostMapping("/upload")
     public ResponseEntity<String> uploadPhoto(@RequestParam("file") MultipartFile file) {
