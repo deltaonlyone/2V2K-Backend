@@ -34,7 +34,7 @@ public class PhotoController {
             return new ResponseEntity<>("File is empty", HttpStatus.BAD_REQUEST);
         }
         try {
-            String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+            String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
 
             byte[] bytes = file.getBytes();
             Path path = Paths.get(uploadPath + fileName);
