@@ -8,6 +8,8 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -28,6 +30,20 @@ public class TokenService {
         Token token = Token.builder()
                 .userId(userId)
                 .value(randomString(32))
+                .expireAt(LocalDateTime.now().plusHours(1))
+                .build();
+
+        token = tokenRepository.save(token);
+        token.setValue(token.getId()+"."+token.getValue());
+        return tokenRepository.save(token);
+    }
+
+    public Token generateRefreshToken(Long userId) {
+
+        Token token = Token.builder()
+                .userId(userId)
+                .value(randomString(32))
+                .expireAt(LocalDateTime.now().plusMonths(6))
                 .build();
 
         token = tokenRepository.save(token);
@@ -42,8 +58,12 @@ public class TokenService {
         tokenRepository.deleteByUserId(userId);
     }
 
+    public List<Token> getAllTokens(){
+        return tokenRepository.findAll();
+    }
 
     private static String randomString(int length) {
         return RandomStringUtils.random(length, 0, 0, true, true, ALPHANUMERIC_CHARS, secureRandom);
     }
+
 }

@@ -68,6 +68,9 @@ public class AuthService {
         if (token.contains(".")) {
             Long tokenId = Long.valueOf(StringUtils.substringBefore(token, "."));
             Token existingToken = tokenRepository.findById(tokenId).orElseThrow(() -> new UserAuthenticationException("Token not fount"));
+            if(existingToken.isExpired()){
+
+            }
             if (token.equals(existingToken.getValue())) {
                 User user = userRepository.findById(existingToken.getUserId()).orElseThrow(() -> new UserAuthenticationException("User not found"));
 //                user.eraseCredentials();
