@@ -36,13 +36,6 @@ public class UserService {
         return userRepository.findById(id).orElse(null);
     }
 
-//    public List<User> getAllUsers() {
-//        return userRepository.findAll();
-//    }
-
-    public User createUser(User user) {
-        return userRepository.save(user);
-    }
 
     public User updateUser(Long id, User user) {
         if (!userRepository.existsById(id)) {
