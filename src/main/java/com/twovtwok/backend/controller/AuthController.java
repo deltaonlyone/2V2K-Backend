@@ -1,5 +1,6 @@
 package com.twovtwok.backend.controller;
 
+import com.sun.net.httpserver.Headers;
 import com.twovtwok.backend.dao.Token;
 import com.twovtwok.backend.dao.User;
 import com.twovtwok.backend.model.dto.LoginDto;
@@ -28,14 +29,14 @@ public class AuthController {
     private final EmailService emailService;
 
     @PostMapping("authenticate")
-    public ResponseEntity<Void> authenticate(@Validated @RequestBody LoginDto loginDto) {
-        emailService.sendSimpleMessage("deltaonlyone@gmail.com","hi","hello world");
+    public ResponseEntity<Headers> authenticate(@Validated @RequestBody LoginDto loginDto) {
+
         User user = authService.authenticate(loginDto.getUsernameOrEmail(), loginDto.getPassword());
 
         Token token = tokenService.generate(user.getId());
-        Token refreshToken = tokenService.generateRefreshToken(user.getId());
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Authentication", token.getValue());
+        headers.add("Access-Control-Expose-Headers", "*");
         return ResponseEntity.ok().headers(headers).build();
     }
 

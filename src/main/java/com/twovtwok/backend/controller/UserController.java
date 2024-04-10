@@ -53,7 +53,7 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PostMapping("singup")
+    @PostMapping("signup")
     @ResponseStatus(HttpStatus.CREATED)
     public void singUp(@RequestBody User user) {
         userService.register(user);

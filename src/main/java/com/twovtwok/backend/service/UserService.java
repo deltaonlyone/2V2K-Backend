@@ -14,8 +14,9 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
-
+    private final EmailService emailService;
     private final PasswordEncoder passwordEncoder;
+
     public User register(User user){
         if(userRepository.existsByUsername(user.getUsername())){
             throw new UserAlreadyExistException("Username already in use");
@@ -23,6 +24,9 @@ public class UserService {
         if(userRepository.existsByEmail(user.getEmail())){
             throw new UserAlreadyExistException("Email already in use");
         }
+//        for(int i=1; i < 6; i++){
+//            emailService.sendSimpleMessage("skillful02@gmail.com","Count to 5",""+i);
+//        }
         user.setPermissions("USER");
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);

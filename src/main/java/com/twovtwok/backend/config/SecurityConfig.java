@@ -27,21 +27,22 @@ public class SecurityConfig{
     public SecurityFilterChain securityFilter(HttpSecurity http) throws Exception {
         return http
                 .cors().and()
-                // disable CSRF as it's not needed for stateless applications with token based authentication
+//                // disable CSRF as it's not needed for stateless applications with token based authentication
                 .csrf().disable()
                 // stateless (so also disable logout)
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeHttpRequests((authorize) ->
                         authorize
                                 .requestMatchers(POST, "/api/auth/authenticate").anonymous()
-//                                .requestMatchers(POST, "/api/**").anonymous()
-                                .requestMatchers( "/api/users/**").authenticated()
-                                .requestMatchers( "/api/photos/**").authenticated()
+                                .requestMatchers(POST, "/api/**").anonymous()
+//                                .requestMatchers( "/api/users/**").authenticated()
+//                                .requestMatchers( "/api/photos/**").authenticated()
                 ).addFilterBefore(authTokenFilter, BasicAuthenticationFilter.class)
                 .build();
     }
 
-    private UrlBasedCorsConfigurationSource corsConfigurationSource() {
+    @Bean
+    public UrlBasedCorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration conf = new CorsConfiguration();
         conf.setAllowedOrigins(List.of("http://localhost:3000/"));
         conf.setAllowedMethods(List.of("*"));

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+
 @Slf4j
 @RequiredArgsConstructor
 @Component
@@ -27,17 +28,17 @@ public class AuthTokenFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-        try{
+        try {
             User user = authService.authenticate(token);
             UserPrincipal principal = new UserPrincipal(user);
             TokenAuthenticationToken tokenAuthenticationToken =
-                    new TokenAuthenticationToken(token, principal,principal.getAuthorities());
+                    new TokenAuthenticationToken(token, principal, principal.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(tokenAuthenticationToken);
-        }catch (Exception e){
+        } catch (Exception e) {
             log.warn(e.getMessage());
         }
+
+//        response.setHeader("X-Authentication", token);
         filterChain.doFilter(request, response);
-
-
     }
 }
