@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name = "users")
@@ -20,17 +21,19 @@ public class User {
     @Column(unique = true)
     private String username;
 
-    @NonNull
     private String name;
 
     @NonNull
     @Column(unique = true)
     private String email;
+
     private String password;
+
     @NonNull
     private String permissions;
 
-    @NonNull
+    private String bio;
+
     private String phone;
 
     @NonNull
@@ -40,10 +43,20 @@ public class User {
     private String city;
 
     @NonNull
+    private int price;
+
+    private String telegramLink = "";
+    private String whatsappLink = "";
+
     private Boolean verified = false;
+
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Photo> photos;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Album> albums = new ArrayList<>();
+
     @OneToOne
     @JoinColumn(name = "profile_photo_id")
     private Photo profilePhoto;

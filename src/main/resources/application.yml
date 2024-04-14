@@ -21,6 +21,10 @@ spring:
           auth: true
           starttls:
             enable: true
+  cache:
+    cache-names: photos
+    caffeine:
+      spec: maximumSize=100,expireAfterWrite=30m
 
 
 

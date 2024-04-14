@@ -14,6 +14,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
+import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 
 @Configuration
@@ -35,6 +36,7 @@ public class SecurityConfig{
                         authorize
                                 .requestMatchers(POST, "/api/auth/authenticate").anonymous()
                                 .requestMatchers(POST, "/api/**").anonymous()
+                                .requestMatchers(GET, "/api/**").anonymous()
 //                                .requestMatchers( "/api/users/**").authenticated()
 //                                .requestMatchers( "/api/photos/**").authenticated()
                 ).addFilterBefore(authTokenFilter, BasicAuthenticationFilter.class)
