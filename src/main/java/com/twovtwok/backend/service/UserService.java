@@ -37,12 +37,12 @@ public class UserService {
     }
 
 
-    public User updateUser(Long id, User user) {
+    public void updateUser(Long id, User user) {
         if (!userRepository.existsById(id)) {
-            return null;
+            return;
         }
         user.setId(id);
-        return userRepository.save(user);
+        userRepository.save(user);
     }
 
     public void deleteUser(Long id) {
