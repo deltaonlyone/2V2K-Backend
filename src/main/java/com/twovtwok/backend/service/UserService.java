@@ -24,9 +24,9 @@ public class UserService {
         if(userRepository.existsByEmail(user.getEmail())){
             throw new UserAlreadyExistException("Email already in use");
         }
-//        for(int i=1; i < 6; i++){
+
 //            emailService.sendSimpleMessage("skillful02@gmail.com","Count to 5",""+i);
-//        }
+
         user.setPermissions("USER");
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
