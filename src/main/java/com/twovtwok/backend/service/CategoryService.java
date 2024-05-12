@@ -10,6 +10,10 @@ import org.springframework.stereotype.Service;
 public class CategoryService {
     private final CategoryRepository categoryRepository;
 
+    public Category getByName(String name) {
+        return categoryRepository.getCategoryByName(name);
+    }
+
     public Category saveCategory(Category category) {
         return categoryRepository.save(category);
     }

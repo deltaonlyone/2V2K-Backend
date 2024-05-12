@@ -38,19 +38,9 @@ public class TokenService {
         return tokenRepository.save(token);
     }
 
-    public Token generateRefreshToken(Long userId) {
-
-        Token token = Token.builder()
-                .userId(userId)
-                .value(randomString(32))
-                .expireAt(LocalDateTime.now().plusMonths(6))
-                .build();
-
-        token = tokenRepository.save(token);
-        token.setValue(token.getId()+"."+token.getValue());
-        return tokenRepository.save(token);
+    public Token getByValue(String value){
+        return tokenRepository.findTokenByValue(value);
     }
-
 
     public void clear(Long userId) {
         log.debug("Clear auth tokens for user: {}", userId);

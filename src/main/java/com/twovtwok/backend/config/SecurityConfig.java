@@ -14,8 +14,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpMethod.*;
 
 @Configuration
 @EnableWebSecurity
@@ -34,11 +33,17 @@ public class SecurityConfig{
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeHttpRequests((authorize) ->
                         authorize
-                                .requestMatchers(POST, "/api/auth/authenticate").anonymous()
-                                .requestMatchers(POST, "/api/**").anonymous()
-                                .requestMatchers(GET, "/api/**").anonymous()
-//                                .requestMatchers( "/api/users/**").authenticated()
-//                                .requestMatchers( "/api/photos/**").authenticated()
+                                .requestMatchers( POST, "/api/auth/authenticate").anonymous()
+                                .requestMatchers( GET,"/api/portfolio/**").anonymous()
+                                .requestMatchers( GET, "/api/search/**").anonymous()
+                                .requestMatchers( GET, "/api/photos/**").anonymous()
+                                .requestMatchers("/api/users/**").authenticated()
+                                .requestMatchers(POST,"/api/photos/**").authenticated()
+                                .requestMatchers(DELETE,"/api/photos/**").authenticated()
+                                .requestMatchers("/api/photos/**").authenticated()
+
+
+
                 ).addFilterBefore(authTokenFilter, BasicAuthenticationFilter.class)
                 .build();
     }

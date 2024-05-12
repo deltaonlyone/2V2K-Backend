@@ -7,6 +7,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -14,6 +15,10 @@ public class PhotoService {
 
     
     private final PhotoRepository photoRepository;
+
+    public Optional<List<Photo>> findAllByUserId(Long id) {
+        return photoRepository.findAllByUserId(id);
+    }
 
     @Cacheable("photos")
     public Photo getPhotoById(Long id) {
