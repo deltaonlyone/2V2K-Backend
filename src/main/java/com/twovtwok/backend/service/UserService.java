@@ -15,7 +15,7 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final EmailService emailService;
+//    private final EmailService emailService;
     private final PasswordEncoder passwordEncoder;
 
     public User register(User user){

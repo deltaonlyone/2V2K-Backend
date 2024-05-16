@@ -10,17 +10,17 @@ spring:
       hibernate:
         enable_lazy_load_no_trans: true
         ddl-auto: update
-  mail:
-    host: smtp.gmail.com
-    port: 587
-    username: ${mail}
-    password: ${mail.password}
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
+#  mail:
+#    host: smtp.gmail.com
+#    port: 587
+#    username: ${mail}
+#    password: ${mail.password}
+#    properties:
+#      mail:
+#        smtp:
+#          auth: true
+#          starttls:
+#            enable: true
   cache:
     cache-names: photos
     caffeine:
