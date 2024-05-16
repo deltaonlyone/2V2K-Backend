@@ -20,12 +20,10 @@ public class PhotoService {
         return photoRepository.findAllByUserId(id);
     }
 
-    @Cacheable("photos")
     public Photo getPhotoById(Long id) {
         return photoRepository.findById(id).orElse(null);
     }
 
-    @Cacheable("allPhotos")
     public List<Photo> getAllPhotos() {
         return photoRepository.findAll();
     }
