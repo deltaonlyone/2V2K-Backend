@@ -37,12 +37,16 @@ public class SecurityConfig{
                                 .requestMatchers( GET,"/api/portfolio/**").anonymous()
                                 .requestMatchers( GET, "/api/search/**").anonymous()
                                 .requestMatchers( GET, "/api/photos/**").anonymous()
-                                .requestMatchers("/api/users/**").authenticated()
+                                .requestMatchers("/api/categories/**").anonymous()
+                                .requestMatchers(POST,"/api/users/signup").anonymous()
+                                .requestMatchers(GET,"/api/users/**").anonymous()
+                                .requestMatchers(POST,"/api/users/addIcon/**").authenticated()
+                                .requestMatchers(GET,"/api/users/my").authenticated()
+                                .requestMatchers(PUT,"/api/users/**").authenticated()
+                                .requestMatchers(PATCH,"/api/users/**").authenticated()
+                                .requestMatchers(DELETE,"/api/users/**").authenticated()
                                 .requestMatchers(POST,"/api/photos/**").authenticated()
                                 .requestMatchers(DELETE,"/api/photos/**").authenticated()
-                                .requestMatchers("/api/photos/**").authenticated()
-
-
 
                 ).addFilterBefore(authTokenFilter, BasicAuthenticationFilter.class)
                 .build();

@@ -38,12 +38,27 @@ public class UserService {
     }
 
 
-    public void updateUser(Long id, User user) {
-        if (!userRepository.existsById(id)) {
-            return;
+    public Optional<User> updateUser(Long id, User updatedUser) {
+        Optional<User> optionalUser = userRepository.findById(id);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            if (updatedUser.getUsername() != null) user.setUsername(updatedUser.getUsername());
+            if (updatedUser.getName() != null) user.setName(updatedUser.getName());
+            if (updatedUser.getEmail() != null) user.setEmail(updatedUser.getEmail());
+            if (updatedUser.getPassword() != null) user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+            if (updatedUser.getPermissions() != null) user.setPermissions(updatedUser.getPermissions());
+            if (updatedUser.getBio() != null) user.setBio(updatedUser.getBio());
+            if (updatedUser.getPhone() != null) user.setPhone(updatedUser.getPhone());
+            if (updatedUser.getCountry() != null) user.setCountry(updatedUser.getCountry());
+            if (updatedUser.getCity() != null) user.setCity(updatedUser.getCity());
+            if (updatedUser.getPrice() != 0) user.setPrice(updatedUser.getPrice());
+            if (updatedUser.getTelegramLink() != null) user.setTelegramLink(updatedUser.getTelegramLink());
+            if (updatedUser.getWhatsappLink() != null) user.setWhatsappLink(updatedUser.getWhatsappLink());
+            if (updatedUser.getVerified() != null) user.setVerified(updatedUser.getVerified());
+
+            return Optional.of(userRepository.save(user));
         }
-        user.setId(id);
-        userRepository.save(user);
+        return Optional.empty();
     }
 
     public void deleteUser(Long id) {
@@ -51,7 +66,6 @@ public class UserService {
             userRepository.deleteById(id);
         }
     }
-
     public Optional<User> findByEmail(String email) {
         return userRepository.findByEmail(email);
     }

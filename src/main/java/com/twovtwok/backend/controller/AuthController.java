@@ -24,9 +24,7 @@ import java.security.Principal;
 public class AuthController {
 
     private final AuthService authService;
-    private final UserService userService;
     private final TokenService tokenService;
-    private final EmailService emailService;
 
     @PostMapping("authenticate")
     public ResponseEntity<Headers> authenticate(@Validated @RequestBody LoginDto loginDto) {
