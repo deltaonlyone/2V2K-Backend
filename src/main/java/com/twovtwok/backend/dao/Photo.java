@@ -51,8 +51,6 @@ public class Photo {
     )
     private List<Hashtag> hashtags = new ArrayList<>();
 
-    @ManyToOne
-    @JoinColumn(name = "location_id")
-    private Location location;
+    private long location;
 
 }
