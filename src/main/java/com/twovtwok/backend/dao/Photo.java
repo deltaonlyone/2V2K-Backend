@@ -30,6 +30,9 @@ public class Photo {
     @JoinColumn(name = "category_id")
     private Category category;
 
+
+    private String description;
+
     @OneToMany(mappedBy = "photo", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Like> likes = new ArrayList<>();
 
@@ -47,4 +50,8 @@ public class Photo {
             inverseJoinColumns = @JoinColumn(name = "hashtag_id")
     )
     private List<Hashtag> hashtags = new ArrayList<>();
-}
+
+    @ManyToOne
+    @JoinColumn(name = "location_id")
+    private Location location;
+    }

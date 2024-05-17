@@ -1,13 +1,7 @@
 package com.twovtwok.backend.controller;
 
-import com.twovtwok.backend.dao.Category;
-import com.twovtwok.backend.dao.Photo;
-import com.twovtwok.backend.dao.Token;
-import com.twovtwok.backend.dao.User;
-import com.twovtwok.backend.service.CategoryService;
-import com.twovtwok.backend.service.PhotoService;
-import com.twovtwok.backend.service.TokenService;
-import com.twovtwok.backend.service.UserService;
+import com.twovtwok.backend.dao.*;
+import com.twovtwok.backend.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -34,25 +28,36 @@ public class PhotoController {
     private final PhotoService photoService;
     private final TokenService tokenService;
     private final CategoryService categoryService;
+    private final LocationService locationService;
 
     private final String uploadPath = "photos/";
     private final UserService userService;
 
     @PostMapping("/upload")
     public ResponseEntity<String> uploadPhoto(
-            @RequestParam("file") MultipartFile file
+            @RequestParam("myfile") MultipartFile file
             , @RequestParam("category") String categoryName
+            , @RequestParam("lat") double lat
+            , @RequestParam("lng") double lng
+            , @RequestParam("description") String description
             , @RequestHeader("X-Authentication") String token) {
         if (file.isEmpty()) {
             return new ResponseEntity<>("File is empty", HttpStatus.BAD_REQUEST);
         }
         try {
+
+
             String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
 
             byte[] bytes = file.getBytes();
             Path path = Paths.get(uploadPath + fileName);
             Files.write(path, bytes);
 
+            if (categoryService.getByName(categoryName) == null) {
+                Category category = new Category();
+                category.setName(categoryName);
+                categoryService.saveCategory(category);
+            }
             Category category = categoryService.getByName(categoryName);
             Token userToken = tokenService.getByValue(token);
             User user = userService.getUserById(userToken.getUserId());
@@ -60,7 +65,17 @@ public class PhotoController {
             Photo photo = new Photo();
             photo.setFilename(fileName);
             photo.setUser(user);
+            photo.setDescription(description);
             photo.setCategory(category);
+            if (lat != 0 && lng != 0){
+                if(locationService.findLocationByLatitudeAndLongitude(lat, lng).isEmpty()){
+                    Location location = new Location();
+                    location.setLongitude(lng);
+                    location.setLatitude(lat);
+                    locationService.saveLocation(location);
+                }
+                photo.setLocation(locationService.findLocationByLatitudeAndLongitude(lat, lng).orElseThrow());
+            }
             photoService.savePhoto(photo);
 
             return new ResponseEntity<>("File uploaded successfully", HttpStatus.OK);

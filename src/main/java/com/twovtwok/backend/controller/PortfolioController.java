@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -31,8 +30,9 @@ public class PortfolioController {
         if (category != null && !category.isEmpty()) {
             if (!Objects.equals(category, "All")) {
                 allPhotos = allPhotos.stream()
+                        .filter(photo -> photo.getCategory()!=null)
                         .filter(photo -> category.equals(photo.getCategory().getName()))
-                        .collect(Collectors.toList());
+                        .toList();
             }
         }
 

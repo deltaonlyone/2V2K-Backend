@@ -55,7 +55,7 @@ public class UserController {
 
     @GetMapping("/my")
     public ResponseEntity<GetUserDto> getUserByToken(@RequestHeader("X-Authorization") String token) {
-        User user = userService.getUserById(authService.authenticate(token).getId());
+            User user = userService.getUserById(authService.authenticate(token).getId());
         if (user == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
