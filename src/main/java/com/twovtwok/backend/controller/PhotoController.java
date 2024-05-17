@@ -73,8 +73,9 @@ public class PhotoController {
                     location.setLongitude(lng);
                     location.setLatitude(lat);
                     locationService.saveLocation(location);
+                    System.out.println(locationService.getAllLocations());
                 }
-                photo.setLocation(locationService.findLocationByLatitudeAndLongitude(lat, lng).orElseThrow());
+                 photo.setLocation(locationService.findLocationByLatitudeAndLongitude(lat, lng).orElseThrow());
             }
             photoService.savePhoto(photo);
 

@@ -54,4 +54,5 @@ public class Photo {
     @ManyToOne
     @JoinColumn(name = "location_id")
     private Location location;
-    }
+
+}
